@@ -2,12 +2,77 @@
 const app = getApp()
 var wxDraw = require("../../utils/wxdraw.min.js").wxDraw;
 var Shape = require("../../utils/wxdraw.min.js").Shape;
+
+let rpx
 Page({
   data: {
     userInfo: {},
     hasUserInfo: false,
     wxCanvas: null // 注意这里 需要创建一个对象来接受wxDraw对象
   },
+  onLoad: function () {
+    let screen_width, screen_height
+    wx.getSystemInfo({
+      success(res) {
+        rpx = res.windowWidth / 375;
+        screen_width = res.windowWidth;
+        screen_height = res.windowHeight;
+      },
+    })
+    var context = wx.createCanvasContext('canvas');
+    this.wxCanvas = new wxDraw(context, 0, 0, screen_width, screen_height);
+    this.cylinder(200, 200, 100, 10, "#f48888")
+  },
+  //圆柱
+  cylinder: function (x, y, width, height, color) {
+    let cylinder = []
+    let cylinders = {
+      rect: {
+        type: "rect",
+        x: x,
+        y: y + height / 2,
+        w: width,
+        h: height,
+        fillStyle: color
+      },
+      ellipse1: {
+        type: "ellipse",
+        x: x,
+        y: y + height,
+        a: width,
+        b: height * 2,
+        fillStyle: color,
+        opacity: 1,
+        shadow: {
+          blur: 2
+        }
+      },
+      ellipse2: {
+        type: "ellipse",
+        x: x,
+        y: y,
+        a: width,
+        b: height * 2,
+        fillStyle: color,
+        opacity: 1,
+        shadow: {
+          blur: 2
+        }
+      },
+    }
+    let keys = Object.keys(cylinders);
+    for (var i = 0; i < keys.length; i++) {
+      cylinder[i] = new Shape(cylinders[keys[i]].type, cylinders[keys[i]], 'fill', false);
+      this.wxCanvas.add(cylinder[i]);
+      console.log(cylinder[i])
+      cylinder[i].animate({
+        "y": "+=100"
+      }, {
+        duration: 1000
+      }).start(1);
+    }
+  },
+
   //事件处理函数
   bindtouchstart: function (e) {
     this.wxCanvas.touchstartDetect(e);
@@ -24,14 +89,7 @@ Page({
   bindlongpress: function (e) {
     this.wxCanvas.longpressDetect(e);
   },
-  onLoad: function () {
-    var context = wx.createCanvasContext('first');//还记得 在wxml里面canvas的id叫first吗
-    this.wxCanvas = new wxDraw(context,0,0,400,500);
-    var rect = new Shape('rect', {x: 60, y: 60, w: 40, h: 40, fillStyle: "#2FB8AC", rotate: Math.PI/2 },'mix', true);
-    this.wxCanvas.add(rect);
-    rect.animate({"x":"+=100","y":"+=100"},{duration:1000}).animate("rotate",Math.PI*5,{duration:1000}).start(3);
-  },
-  onUnload:function(){
+  onUnload: function () {
     this.wxCanvas.clear()
   }
 })
