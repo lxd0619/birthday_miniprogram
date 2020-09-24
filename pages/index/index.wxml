@@ -8,6 +8,7 @@
     </block>
   </view>
   <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
+    <view class="user-motto" wx:if="{{!end}}">{{day}}:{{hou}}:{{min}}:{{sec}}</view>
+    <text class="user-motto" bindtap="fnClick" wx:if="{{end}}">{{motto}}</text>
   </view>
 </view>
