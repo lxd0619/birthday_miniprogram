@@ -21,20 +21,18 @@ Page({
     })
     var context = wx.createCanvasContext('canvas');
     this.wxCanvas = new wxDraw(context, 0, 0, screen_width, screen_height);
-    this.cylinder(200, 200, 100, 10, "#f48888")
+    // this.cylinder(200, -30, 150, 10, "#f48888", 300)
+    let color = ["#f44336", "#e91e63", "#9c27b0", "#673AB7", "#3f51b5", "#2196F3", "#03A9F4", "#00BCD4", "#009688", "#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#FF5722"]
+    color.map((item, i) => {
+      setTimeout(() => {
+        this.cylinder(200, -30 - (color.length - i) * 2, 150, 10, item, 300 - i * 5)
+      }, `${i}000`);
+    })
   },
   //圆柱
-  cylinder: function (x, y, width, height, color) {
+  cylinder: function (x, y, width, height, color, fail) {
     let cylinder = []
     let cylinders = {
-      rect: {
-        type: "rect",
-        x: x,
-        y: y + height / 2,
-        w: width,
-        h: height,
-        fillStyle: color
-      },
       ellipse1: {
         type: "ellipse",
         x: x,
@@ -43,9 +41,21 @@ Page({
         b: height * 2,
         fillStyle: color,
         opacity: 1,
-        shadow: {
-          blur: 2
-        }
+        // needShadow: true,
+        // shadow: {
+        //   offsetX: 1,
+        //   offsetY: 1,
+        //   blur: 10,
+        //   color: "#000000"
+        // }
+      },
+      rect: {
+        type: "rect",
+        x: x,
+        y: y + height / 2,
+        w: width,
+        h: height,
+        fillStyle: color
       },
       ellipse2: {
         type: "ellipse",
@@ -55,20 +65,16 @@ Page({
         b: height * 2,
         fillStyle: color,
         opacity: 1,
-        shadow: {
-          blur: 2
-        }
       },
     }
     let keys = Object.keys(cylinders);
     for (var i = 0; i < keys.length; i++) {
       cylinder[i] = new Shape(cylinders[keys[i]].type, cylinders[keys[i]], 'fill', false);
       this.wxCanvas.add(cylinder[i]);
-      console.log(cylinder[i])
       cylinder[i].animate({
-        "y": "+=100"
+        "y": `+=${fail}`
       }, {
-        duration: 1000
+        duration: 1500
       }).start(1);
     }
   },

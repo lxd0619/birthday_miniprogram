@@ -2,6 +2,7 @@
   "pages": [
     "pages/canvas/canvas",
     "pages/index/index",
+    "pages/poster/poster",
     "pages/logs/logs"
   ],
   "window": {

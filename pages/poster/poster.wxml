@@ -1,0 +1,6 @@
+<!--logs.wxml-->
+<view class="container"
+  style="background-image: url(./images/ribbon.gif);background-repeat:no-repeat;background-size:cover;">
+  <!-- <image src="./images/ribbon.gif" /> -->
+  <image src="./images/cake.gif" class="cake"/>
+</view>

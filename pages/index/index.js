@@ -18,6 +18,11 @@ Page({
   },
   fnClick: function () {
     wx.navigateTo({
+      url: '../poster/poster'
+    })
+  },
+  fnClick1: function () {
+    wx.navigateTo({
       url: '../canvas/canvas'
     })
   },
