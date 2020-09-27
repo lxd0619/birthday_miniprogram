@@ -1,5 +1,6 @@
 <!--logs.wxml-->
 <view class="container">
+  <view class="text">{{text}}{{line}}</view>
   <canvas class='canvas' canvas-id="canvas" disable-scroll="true" bindtouchstart="bindtouchstart"
     bindtouchmove="bindtouchmove" bindtouchend="bindtouchend" bindtap="bindtap" bindlongpress="bindlongpress"></canvas>
 </view>

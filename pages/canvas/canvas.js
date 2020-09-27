@@ -8,7 +8,9 @@ Page({
   data: {
     userInfo: {},
     hasUserInfo: false,
-    wxCanvas: null // 注意这里 需要创建一个对象来接受wxDraw对象
+    wxCanvas: null, // 注意这里 需要创建一个对象来接受wxDraw对象
+    text: "",
+    line: "|"
   },
   onLoad: function () {
     let screen_width, screen_height
@@ -17,20 +19,59 @@ Page({
         rpx = res.windowWidth / 375;
         screen_width = res.windowWidth;
         screen_height = res.windowHeight;
+
       },
+    })
+    this.setData({
+      screen_width,
+      screen_height
     })
     var context = wx.createCanvasContext('canvas');
     this.wxCanvas = new wxDraw(context, 0, 0, screen_width, screen_height);
-    // this.cylinder(200, -30, 150, 10, "#f48888", 300)
+    this.line()
+    setTimeout(() => {
+      this.text("Hello World.")
+    }, 3000);
+    this.cake()
+  },
+  text: function (src) {
+    let string, timer
+    src.split("").map((item, i) => {
+      timer = setTimeout(() => {
+        string = this.data.text + item
+        this.setData({
+          text: string
+        })
+      }, `${i*2}00`);
+    })
+    clearTimeout(timer)
+  },
+  line: function () {
+    setInterval(() => {
+      if (this.data.line == "") {
+        this.setData({
+          line: "|"
+        })
+      } else {
+        this.setData({
+          line: ""
+        })
+      }
+    }, 500);
+  },
+  cake: function () {
+    let timer
     let color = ["#f44336", "#e91e63", "#9c27b0", "#673AB7", "#3f51b5", "#2196F3", "#03A9F4", "#00BCD4", "#009688", "#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#FF5722"]
     color.map((item, i) => {
-      setTimeout(() => {
-        this.cylinder(200, -30 - (color.length - i) * 2, 150, 10, item, 300 - i * 5)
+      timer = setTimeout(async () => {
+        this.cylinder(200, -30, 150, 5, item, 500 - 5 * i)
       }, `${i}000`);
     })
+    clearTimeout(timer)
   },
   //圆柱
   cylinder: function (x, y, width, height, color, fail) {
+    console.log(y, height, fail)
     let cylinder = []
     let cylinders = {
       ellipse1: {
@@ -40,14 +81,7 @@ Page({
         a: width,
         b: height * 2,
         fillStyle: color,
-        opacity: 1,
-        // needShadow: true,
-        // shadow: {
-        //   offsetX: 1,
-        //   offsetY: 1,
-        //   blur: 10,
-        //   color: "#000000"
-        // }
+        opacity: 1
       },
       rect: {
         type: "rect",
@@ -65,6 +99,13 @@ Page({
         b: height * 2,
         fillStyle: color,
         opacity: 1,
+        needShadow: true,
+        shadow: {
+          offsetX: 1,
+          offsetY: 1,
+          blur: 1,
+          color: "#fff"
+        }
       },
     }
     let keys = Object.keys(cylinders);
@@ -74,7 +115,11 @@ Page({
       cylinder[i].animate({
         "y": `+=${fail}`
       }, {
-        duration: 1500
+        duration: 1000,
+        // easing: "easeTo"
+        easing: "easeOutBounce"
+        // easing: "easeInOutCirc"
+        // easing: "easeOutSine"
       }).start(1);
     }
   },
