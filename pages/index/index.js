@@ -8,7 +8,7 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    endTime: '2020-9-23 11:44:20'
+    endTime: '2020-9-30 00:00:00'
   },
   //事件处理函数
   bindViewTap: function () {
@@ -17,11 +17,6 @@ Page({
     })
   },
   fnClick: function () {
-    wx.navigateTo({
-      url: '../poster/poster'
-    })
-  },
-  fnClick1: function () {
     wx.navigateTo({
       url: '../canvas/canvas'
     })
@@ -32,7 +27,6 @@ Page({
     var nowTime = new Date().getTime(); //现在时间（时间戳）
     var endTime = new Date(that.data.endTime).getTime(); //结束时间（时间戳）
     var time = (endTime - nowTime) / 1000; //距离结束的毫秒数
-    console.log("time", time.toString().split(".")[0])
     if (time.toString().split(".")[0] < "0") {
       this.setData({
         end: true
@@ -44,7 +38,6 @@ Page({
     let hou = parseInt(time % (60 * 60 * 24) / 3600);
     let min = parseInt(time % (60 * 60 * 24) % 3600 / 60);
     let sec = parseInt(time % (60 * 60 * 24) % 3600 % 60);
-    // console.log(day + "," + hou + "," + min + "," + sec)
     day = that.timeFormin(day),
       hou = that.timeFormin(hou),
       min = that.timeFormin(min),

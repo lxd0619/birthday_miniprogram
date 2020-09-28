@@ -9,7 +9,6 @@
   </view>
   <view class="usermotto">
     <view class="user-motto" wx:if="{{!end}}">{{day}}:{{hou}}:{{min}}:{{sec}}</view>
-    <text class="user-motto" bindtap="fnClick" wx:if="{{end}}">{{motto}}</text>
-    <view class="user-motto" bindtap="fnClick1" wx:if="{{end}}" style="margin-top:30px">canvas</view>
+    <text class="button" bindtap="fnClick" wx:if="{{end}}">{{motto}}</text>
   </view>
 </view>
